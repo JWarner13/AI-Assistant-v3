@@ -1,0 +1,8 @@
+{
+  "created_at": "2025-08-04T02:26:15.291419",
+  "document_count": 3,
+  "chunk_count": 5,
+  "embedding_model": "HuggingFaceEmbeddings",
+  "build_time_seconds": 0.21102666854858398,
+  "content_hash": "5a62064fce01eb55bbe4edd37d6e3ea2"
+}

@@ -1,0 +1,165 @@
+# CORE MODEL CONFIGURATION
+# =============================================================================
+
+# Primary embedding model provider
+embedding_model: huggingface
+
+# Vector storage backend
+vector_store: faiss
+
+# Large Language Model provider
+llm_provider: huggingface
+
+# =============================================================================
+# HuggingFace CONFIGURATION
+# =============================================================================
+huggingface:
+  # Embedding model settings
+  embedding:
+    model: sentence-transformers/all-MiniLM-L6-v2  # Fixed: Use actual HF model
+    dimensions: 384  # Fixed: Correct dimensions for this model
+    chunk_size: 1000
+    max_retries: 3
+    request_timeout: 60
+    batch_size: 100
+    
+  # LLM settings
+  llm:
+    model: mistralai/Mistral-7B-Instruct-v0.1  # Fixed: Use actual HF model
+    fallback_model: google/flan-t5-base  # Fixed: Reliable fallback
+    temperature: 0.1
+    max_tokens: 2000
+    max_retries: 3
+    request_timeout: 120
+    
+  # Rate limiting and cost management (free tier)
+  rate_limiting:
+    requests_per_minute: 10  # Conservative for free tier
+    enable_cost_tracking: false  # Free models
+    max_requests_per_hour: 100
+
+# =============================================================================
+# DOCUMENT PROCESSING CONFIGURATION
+# =============================================================================
+document_processing:
+  # Text chunking settings
+  chunking:
+    chunk_size: 500
+    overlap: 100
+    preserve_paragraphs: true
+    min_chunk_size: 50
+    max_chunk_size: 1000
+    
+  # File processing settings
+  files:
+    supported_extensions: ['.pdf', '.txt', '.docx', '.md']
+    max_file_size_mb: 50
+    max_files_per_directory: 100
+    encoding_fallback: ['utf-8', 'utf-16', 'latin-1', 'cp1252']
+
+# =============================================================================
+# RAG PIPELINE CONFIGURATION
+# =============================================================================
+rag:
+  # Document retrieval settings
+  retrieval:
+    default_k: 5
+    adaptive_k: true
+    max_k: 12
+    min_k: 2
+    
+  # Response generation
+  generation:
+    enable_source_attribution: true
+    require_evidence: true
+    max_response_length: 2000
+    min_response_length: 50
+
+# =============================================================================
+# REASONING CONFIGURATION
+# =============================================================================
+reasoning:
+  enable_by_default: true
+  conflict_detection:
+    enable: true
+    strategies:
+      - llm_analysis
+      - heuristic_patterns
+    max_conflicts_to_report: 5
+    
+  multi_hop:
+    enable: true
+    max_hops: 3
+
+# =============================================================================
+# CACHING CONFIGURATION
+# =============================================================================
+cache:
+  memory:
+    max_items: 1000
+    default_ttl: 3600
+    lru_eviction: true
+    
+  persistence:
+    enable: true
+    directory: cache
+    cleanup_interval: 3600
+    max_disk_size_mb: 500
+
+# =============================================================================
+# LOGGING CONFIGURATION
+# =============================================================================
+logging:
+  level: INFO
+  file: outputs/activity.log
+  rotation: "10 MB"
+  retention: "30 days"
+  format: "{time:YYYY-MM-DD HH:mm:ss} | {level} | {name} | {message} | {extra}"
+  
+  components:
+    rag_engine: INFO
+    document_loader: INFO
+    embedding: INFO
+    cache: INFO
+    reasoning: DEBUG
+    cli: INFO
+    performance: INFO
+
+# =============================================================================
+# PERFORMANCE CONFIGURATION
+# =============================================================================
+performance:
+  limits:
+    max_concurrent_queries: 5  # Conservative for free tier
+    query_timeout: 60
+    embedding_timeout: 120
+    reasoning_timeout: 180
+    
+  batch:
+    batch_size: 20
+    max_batch_size: 50
+
+# =============================================================================
+# OUTPUT FORMATTING CONFIGURATION
+# =============================================================================
+output:
+  defaults:
+    format: json
+    include_metadata: true
+    include_reasoning: true
+    include_confidence: true
+    include_performance_metrics: true
+    include_sources: true
+    
+  formats:
+    json:
+      pretty_print: true
+      compact_mode: false
+      
+    markdown:
+      include_toc: false
+      max_heading_level: 3
+      
+    executive:
+      max_length: 1000
+      business_language: true

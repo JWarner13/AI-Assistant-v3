@@ -1,0 +1,517 @@
+{
+  "metadata": {
+    "version": "2.0",
+    "description": "Enhanced sample queries for testing the AI Document Assistant with advanced RAG engine and output formatting",
+    "created_date": "2024-01-15",
+    "last_updated": "2024-01-15",
+    "compatibility": "Enhanced RAG Engine v2.0+",
+    "total_test_scenarios": 8,
+    "estimated_test_time": "45 minutes"
+  },
+  "query_categories": {
+    "basic_factual": {
+      "description": "Simple questions requiring direct information retrieval",
+      "expected_features": ["source_attribution", "confidence_scoring"],
+      "typical_processing_time": "2-4 seconds",
+      "cache_effectiveness": "high"
+    },
+    "comparison": {
+      "description": "Questions requiring comparison across multiple sources or concepts",
+      "expected_features": ["multi_hop_reasoning", "conflict_detection", "synthesis"],
+      "typical_processing_time": "5-8 seconds",
+      "cache_effectiveness": "medium"
+    },
+    "reasoning": {
+      "description": "Complex questions requiring multi-step logical reasoning",
+      "expected_features": ["reasoning_trace", "chain_of_thought", "evidence_evaluation"],
+      "typical_processing_time": "6-10 seconds",
+      "cache_effectiveness": "low"
+    },
+    "synthesis": {
+      "description": "Questions requiring information synthesis from multiple documents",
+      "expected_features": ["multi_document_analysis", "comprehensive_sourcing", "conflict_resolution"],
+      "typical_processing_time": "8-12 seconds",
+      "cache_effectiveness": "low"
+    },
+    "procedural": {
+      "description": "Questions about processes, steps, and methodologies",
+      "expected_features": ["step_extraction", "process_mapping", "sequential_reasoning"],
+      "typical_processing_time": "4-7 seconds",
+      "cache_effectiveness": "medium"
+    },
+    "analytical": {
+      "description": "Questions requiring analysis, evaluation, or assessment",
+      "expected_features": ["critical_analysis", "evidence_weighing", "strength_assessment"],
+      "typical_processing_time": "7-11 seconds",
+      "cache_effectiveness": "low"
+    },
+    "edge_cases": {
+      "description": "Queries designed to test system robustness and error handling",
+      "expected_features": ["graceful_degradation", "error_handling", "fallback_responses"],
+      "typical_processing_time": "3-6 seconds",
+      "cache_effectiveness": "variable"
+    }
+  },
+  "test_queries": [
+    {
+      "id": "basic_01",
+      "category": "basic_factual",
+      "query": "What is machine learning?",
+      "expected_complexity": "low",
+      "expected_sources": 1,
+      "expected_confidence": "high",
+      "test_reasoning": false,
+      "expected_conflicts": 0,
+      "description": "Basic definitional query to test fundamental RAG functionality",
+      "success_criteria": {
+        "response_time_max": 5,
+        "min_confidence_score": 0.8,
+        "requires_sources": true,
+        "requires_answer": true
+      },
+      "output_format_tests": ["json", "text", "markdown", "executive"]
+    },
+    {
+      "id": "basic_02",
+      "category": "basic_factual",
+      "query": "What are the main types of machine learning?",
+      "expected_complexity": "medium",
+      "expected_sources": 1,
+      "expected_confidence": "high",
+      "test_reasoning": false,
+      "expected_conflicts": 0,
+      "description": "Categorization query testing structured information retrieval",
+      "success_criteria": {
+        "response_time_max": 5,
+        "min_confidence_score": 0.75,
+        "requires_sources": true,
+        "requires_structured_answer": true
+      },
+      "output_format_tests": ["json", "markdown", "csv"]
+    },
+    {
+      "id": "comparison_01",
+      "category": "comparison",
+      "query": "What are the differences between supervised and unsupervised learning?",
+      "expected_complexity": "medium",
+      "expected_sources": 1,
+      "expected_confidence": "high",
+      "test_reasoning": true,
+      "expected_conflicts": 0,
+      "description": "Direct comparison query testing synthesis capabilities",
+      "success_criteria": {
+        "response_time_max": 8,
+        "min_confidence_score": 0.7,
+        "requires_sources": true,
+        "requires_reasoning_trace": true,
+        "must_show_comparison": true
+      },
+      "output_format_tests": ["json", "markdown", "executive"]
+    },
+    {
+      "id": "comparison_02",
+      "category": "comparison",
+      "query": "Compare the advantages and disadvantages of different machine learning approaches mentioned in the documents",
+      "expected_complexity": "high",
+      "expected_sources": 2,
+      "expected_confidence": "medium",
+      "test_reasoning": true,
+      "expected_conflicts": 0,
+      "description": "Multi-faceted comparison requiring comprehensive document analysis",
+      "success_criteria": {
+        "response_time_max": 12,
+        "min_confidence_score": 0.6,
+        "requires_multiple_sources": true,
+        "requires_reasoning_trace": true,
+        "must_show_advantages_disadvantages": true
+      },
+      "output_format_tests": ["json", "markdown", "executive", "xml"]
+    },
+    {
+      "id": "reasoning_01",
+      "category": "reasoning",
+      "query": "Why is data quality important for machine learning models, and what are the consequences of poor data quality?",
+      "expected_complexity": "high",
+      "expected_sources": 1,
+      "expected_confidence": "medium",
+      "test_reasoning": true,
+      "expected_conflicts": 0,
+      "description": "Causal reasoning query testing multi-hop logical connections",
+      "success_criteria": {
+        "response_time_max": 10,
+        "min_confidence_score": 0.65,
+        "requires_sources": true,
+        "requires_reasoning_trace": true,
+        "must_show_causation": true,
+        "reasoning_type": "causal"
+      },
+      "output_format_tests": ["json", "markdown", "text"]
+    },
+    {
+      "id": "reasoning_02",
+      "category": "reasoning",
+      "query": "How do the principles of machine learning relate to natural language processing applications, and what makes NLP particularly challenging?",
+      "expected_complexity": "very_high",
+      "expected_sources": 2,
+      "expected_confidence": "medium",
+      "test_reasoning": true,
+      "expected_conflicts": 0,
+      "description": "Multi-domain reasoning testing cross-topic synthesis",
+      "success_criteria": {
+        "response_time_max": 15,
+        "min_confidence_score": 0.6,
+        "requires_multiple_sources": true,
+        "requires_reasoning_trace": true,
+        "must_show_relationships": true,
+        "reasoning_type": "analytical"
+      },
+      "output_format_tests": ["json", "markdown", "executive"]
+    },
+    {
+      "id": "synthesis_01",
+      "category": "synthesis",
+      "query": "What are the key considerations when implementing a machine learning system in production, based on all available information?",
+      "expected_complexity": "high",
+      "expected_sources": 2,
+      "expected_confidence": "medium",
+      "test_reasoning": true,
+      "expected_conflicts": 0,
+      "description": "Multi-source synthesis testing comprehensive information aggregation",
+      "success_criteria": {
+        "response_time_max": 12,
+        "min_confidence_score": 0.65,
+        "requires_multiple_sources": true,
+        "requires_reasoning_trace": true,
+        "must_synthesize_information": true,
+        "reasoning_type": "synthesis"
+      },
+      "output_format_tests": ["json", "markdown", "executive", "yaml"]
+    },
+    {
+      "id": "synthesis_02",
+      "category": "synthesis",
+      "query": "Summarize the main concepts, best practices, and potential challenges mentioned across all documents",
+      "expected_complexity": "very_high",
+      "expected_sources": 3,
+      "expected_confidence": "medium",
+      "test_reasoning": true,
+      "expected_conflicts": 0,
+      "description": "Comprehensive synthesis requiring analysis of entire document corpus",
+      "success_criteria": {
+        "response_time_max": 20,
+        "min_confidence_score": 0.6,
+        "requires_all_sources": true,
+        "requires_reasoning_trace": true,
+        "must_be_comprehensive": true,
+        "reasoning_type": "synthesis"
+      },
+      "output_format_tests": ["json", "markdown", "executive", "csv"]
+    },
+    {
+      "id": "procedural_01",
+      "category": "procedural",
+      "query": "What steps should be followed when building a machine learning model from start to finish?",
+      "expected_complexity": "medium",
+      "expected_sources": 1,
+      "expected_confidence": "high",
+      "test_reasoning": true,
+      "expected_conflicts": 0,
+      "description": "Process-oriented query testing sequential reasoning",
+      "success_criteria": {
+        "response_time_max": 8,
+        "min_confidence_score": 0.7,
+        "requires_sources": true,
+        "requires_reasoning_trace": true,
+        "must_show_sequence": true,
+        "reasoning_type": "procedural"
+      },
+      "output_format_tests": ["json", "markdown", "text"]
+    },
+    {
+      "id": "analytical_01",
+      "category": "analytical",
+      "query": "Evaluate the strengths and limitations of the machine learning approaches described in the documents",
+      "expected_complexity": "high",
+      "expected_sources": 2,
+      "expected_confidence": "medium",
+      "test_reasoning": true,
+      "expected_conflicts": 0,
+      "description": "Critical evaluation query testing analytical reasoning",
+      "success_criteria": {
+        "response_time_max": 12,
+        "min_confidence_score": 0.65,
+        "requires_multiple_sources": true,
+        "requires_reasoning_trace": true,
+        "must_show_evaluation": true,
+        "reasoning_type": "analytical"
+      },
+      "output_format_tests": ["json", "markdown", "executive"]
+    },
+    {
+      "id": "edge_case_01",
+      "category": "edge_cases",
+      "query": "What information is provided about quantum computing and blockchain applications?",
+      "expected_complexity": "low",
+      "expected_sources": 0,
+      "expected_confidence": "none",
+      "test_reasoning": false,
+      "expected_conflicts": 0,
+      "description": "Query about topics not present in documents - tests graceful handling",
+      "success_criteria": {
+        "response_time_max": 8,
+        "must_indicate_no_information": true,
+        "must_not_hallucinate": true,
+        "graceful_degradation": true
+      },
+      "output_format_tests": ["json", "text"]
+    },
+    {
+      "id": "edge_case_02",
+      "category": "edge_cases",
+      "query": "How do machine learning techniques compare to traditional statistical methods and what are the implications for business decision making in highly regulated industries with strict compliance requirements?",
+      "expected_complexity": "very_high",
+      "expected_sources": 2,
+      "expected_confidence": "low",
+      "test_reasoning": true,
+      "expected_conflicts": 0,
+      "description": "Very complex multi-part query testing system limits",
+      "success_criteria": {
+        "response_time_max": 25,
+        "min_confidence_score": 0.4,
+        "must_attempt_answer": true,
+        "may_indicate_limitations": true,
+        "reasoning_type": "comparison"
+      },
+      "output_format_tests": ["json", "markdown", "executive"]
+    },
+    {
+      "id": "conflict_test_01",
+      "category": "edge_cases",
+      "query": "What is the best approach for model validation?",
+      "expected_complexity": "medium",
+      "expected_sources": 1,
+      "expected_confidence": "medium",
+      "test_reasoning": true,
+      "expected_conflicts": 0,
+      "description": "Potentially ambiguous query that may reveal conflicting recommendations",
+      "success_criteria": {
+        "response_time_max": 10,
+        "min_confidence_score": 0.5,
+        "must_handle_ambiguity": true,
+        "conflict_detection_active": true
+      },
+      "output_format_tests": ["json", "markdown"]
+    }
+  ],
+  "batch_test_scenarios": [
+    {
+      "name": "basic_functionality_suite",
+      "description": "Test basic RAG functionality and output formatting",
+      "queries": ["basic_01", "basic_02", "procedural_01"],
+      "expected_avg_time": 4.0,
+      "success_criteria": {
+        "all_queries_successful": true,
+        "avg_confidence_min": 0.75,
+        "all_sources_attributed": true
+      },
+      "output_formats_to_test": ["json", "text", "markdown"]
+    },
+    {
+      "name": "advanced_reasoning_suite",
+      "description": "Test advanced reasoning capabilities and conflict detection",
+      "queries": ["reasoning_01", "reasoning_02", "comparison_02", "analytical_01"],
+      "expected_avg_time": 12.0,
+      "success_criteria": {
+        "reasoning_traces_present": true,
+        "multi_hop_reasoning_detected": true,
+        "conflict_detection_active": true
+      },
+      "output_formats_to_test": ["json", "markdown", "executive"]
+    },
+    {
+      "name": "synthesis_capabilities_suite",
+      "description": "Test multi-document synthesis and comprehensive analysis",
+      "queries": ["synthesis_01", "synthesis_02", "comparison_02"],
+      "expected_avg_time": 15.0,
+      "success_criteria": {
+        "multiple_sources_used": true,
+        "comprehensive_synthesis": true,
+        "high_reasoning_complexity": true
+      },
+      "output_formats_to_test": ["json", "markdown", "executive", "yaml"]
+    },
+    {
+      "name": "robustness_and_edge_cases",
+      "description": "Test system robustness and edge case handling",
+      "queries": ["edge_case_01", "edge_case_02", "conflict_test_01"],
+      "expected_avg_time": 8.0,
+      "success_criteria": {
+        "graceful_error_handling": true,
+        "no_hallucinations": true,
+        "appropriate_confidence_levels": true
+      },
+      "output_formats_to_test": ["json", "text"]
+    },
+    {
+      "name": "performance_benchmark_suite",
+      "description": "Benchmark system performance under various loads",
+      "queries": ["basic_01", "comparison_01", "reasoning_01", "synthesis_01"],
+      "repeat_count": 5,
+      "expected_avg_time": 8.0,
+      "success_criteria": {
+        "consistent_performance": true,
+        "cache_benefits_observed": true,
+        "no_performance_degradation": true
+      },
+      "output_formats_to_test": ["json"],
+      "performance_metrics": {
+        "max_acceptable_time": 30,
+        "cache_hit_rate_target": 0.6,
+        "memory_usage_stable": true
+      }
+    },
+    {
+      "name": "output_format_validation_suite",
+      "description": "Validate all output formats work correctly",
+      "queries": ["basic_01", "comparison_01", "synthesis_01"],
+      "expected_avg_time": 6.0,
+      "success_criteria": {
+        "all_formats_parseable": true,
+        "content_consistency": true,
+        "format_specific_features": true
+      },
+      "output_formats_to_test": ["json", "yaml", "markdown", "xml", "csv", "text", "executive"],
+      "format_validation": {
+        "json": "valid_json_structure",
+        "yaml": "valid_yaml_structure",
+        "markdown": "proper_markdown_formatting",
+        "xml": "valid_xml_structure",
+        "csv": "proper_csv_structure",
+        "executive": "business_appropriate_language"
+      }
+    }
+  ],
+  "quick_test_queries": [
+    "What is machine learning?",
+    "What are the main types of machine learning?",
+    "What is natural language processing used for?",
+    "What are the best practices for ML systems?"
+  ],
+  "comprehensive_test_queries": [
+    "What is machine learning?",
+    "Compare supervised and unsupervised learning approaches",
+    "Why is data quality important for machine learning models?",
+    "What are the key considerations for production ML systems?",
+    "Summarize the main concepts across all documents",
+    "What information is available about quantum computing?",
+    "How do ML techniques compare to traditional statistical methods?"
+  ],
+  "performance_test_queries": [
+    "What is machine learning?",
+    "What are the types of machine learning?",
+    "What is NLP?",
+    "What are ML best practices?",
+    "How does supervised learning work?",
+    "What are NLP applications?",
+    "Compare different ML approaches",
+    "What are the steps in building ML models?",
+    "Why is data quality important?",
+    "What are production ML considerations?"
+  ],
+  "output_format_examples": {
+    "json": {
+      "description": "Standard structured JSON output with full metadata",
+      "use_cases": ["API integration", "system-to-system communication", "data processing"],
+      "sample_command": "python cli.py query 'What is ML?' --format json"
+    },
+    "text": {
+      "description": "Human-readable plain text format",
+      "use_cases": ["CLI display", "simple reports", "email content"],
+      "sample_command": "python cli.py query 'What is ML?' --format text"
+    },
+    "markdown": {
+      "description": "Markdown formatted for documentation and reports",
+      "use_cases": ["documentation", "GitHub reports", "technical writing"],
+      "sample_command": "python cli.py query 'What is ML?' --format markdown"
+    },
+    "executive": {
+      "description": "Executive summary format for business stakeholders",
+      "use_cases": ["business reports", "executive briefings", "decision support"],
+      "sample_command": "python cli.py query 'What is ML?' --format executive"
+    },
+    "yaml": {
+      "description": "YAML format for configuration and human-readable structured data",
+      "use_cases": ["configuration files", "data exchange", "human-readable structure"],
+      "requires_enhanced_formatter": true
+    },
+    "xml": {
+      "description": "XML format for enterprise system integration",
+      "use_cases": ["enterprise systems", "SOAP APIs", "legacy system integration"],
+      "requires_enhanced_formatter": true
+    },
+    "csv": {
+      "description": "CSV summary format for data analysis",
+      "use_cases": ["data analysis", "spreadsheet import", "batch result summaries"],
+      "requires_enhanced_formatter": true
+    }
+  },
+  "evaluation_criteria": {
+    "accuracy": {
+      "description": "Factual correctness of responses",
+      "weight": 0.35,
+      "measurement": "manual_evaluation"
+    },
+    "completeness": {
+      "description": "Coverage of relevant information",
+      "weight": 0.25,
+      "measurement": "automated_content_analysis"
+    },
+    "reasoning_quality": {
+      "description": "Quality and clarity of reasoning traces",
+      "weight": 0.20,
+      "measurement": "manual_evaluation"
+    },
+    "source_attribution": {
+      "description": "Proper citation and source tracking",
+      "weight": 0.10,
+      "measurement": "automated_verification"
+    },
+    "confidence_calibration": {
+      "description": "Accuracy of confidence scoring",
+      "weight": 0.10,
+      "measurement": "statistical_analysis"
+    }
+  },
+  "system_requirements": {
+    "minimum_features": [
+      "document_loading",
+      "semantic_search",
+      "llm_integration",
+      "source_attribution",
+      "json_output"
+    ],
+    "enhanced_features": [
+      "reasoning_traces",
+      "conflict_detection",
+      "multi_hop_reasoning",
+      "confidence_scoring",
+      "performance_metrics",
+      "multiple_output_formats",
+      "caching_system"
+    ],
+    "advanced_features": [
+      "executive_summaries",
+      "batch_processing",
+      "interactive_mode",
+      "cache_management",
+      "document_validation"
+    ]
+  },
+  "usage_examples": {
+    "cli_single_query": "python cli.py query 'What is machine learning?' --reasoning --format markdown",
+    "cli_batch": "python cli.py batch sample_queries.json --output results.json --reasoning",
+    "cli_interactive": "python cli.py interactive --auto-reasoning --save-session session.json",
+    "api_usage": "from core.rag_engine import run_assistant; result = run_assistant('What is ML?')",
+    "format_conversion": "from core.output_formatter import format_for_business; summary = format_for_business(result)"
+  }
+}

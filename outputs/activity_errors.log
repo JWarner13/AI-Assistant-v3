@@ -1,0 +1,648 @@
+2025-08-03T23:28:09.946361-0500 | ERROR | core.logger | LLM failed after 3 retries. Last error: 'InferenceClient' object has no attribute 'post' | {}
+NoneType: None
+2025-08-03T23:43:37.969652-0500 | ERROR | core.logger | All models failed: "'repo_id'" | {}
+Traceback (most recent call last):
+
+  File "C:\Users\rasha\AI-Assistant\core\llm.py", line 116, in _initialize_model
+    model = HuggingFaceHub(
+            └ <class 'langchain_community.llms.huggingface_hub.HuggingFaceHub'>
+
+  File "C:\Users\rasha\AI-Assistant\venv\Lib\site-packages\langchain_core\_api\deprecation.py", line 222, in warn_if_direct_instance
+    return wrapped(self, *args, **kwargs)
+           │       │      │       └ {'repo_id': 'google/flan-t5-base', 'model_kwargs': {'temperature': 0.1, 'max_length': 512, 'do_sample': True}, 'huggingfacehu...
+           │       │      └ ()
+           │       └ HuggingFaceHub()
+           └ <function Serializable.__init__ at 0x0000024B56572D40>
+  File "C:\Users\rasha\AI-Assistant\venv\Lib\site-packages\langchain_core\load\serializable.py", line 130, in __init__
+    super().__init__(*args, **kwargs)
+                      │       └ {'repo_id': 'google/flan-t5-base', 'model_kwargs': {'temperature': 0.1, 'max_length': 512, 'do_sample': True}, 'huggingfacehu...
+                      └ ()
+  File "C:\Users\rasha\AI-Assistant\venv\Lib\site-packages\pydantic\main.py", line 253, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+                     │    │                      │               │                   └ HuggingFaceHub()
+                     │    │                      │               └ {'repo_id': 'google/flan-t5-base', 'model_kwargs': {'temperature': 0.1, 'max_length': 512, 'do_sample': True}, 'huggingfacehu...
+                     │    │                      └ <method 'validate_python' of 'pydantic_core._pydantic_core.SchemaValidator' objects>
+                     │    └ SchemaValidator(title="HuggingFaceHub", validator=Model(
+                     │          ModelValidator {
+                     │              revalidate: Never,
+                     │              validator: F...
+                     └ HuggingFaceHub()
+
+pydantic_core._pydantic_core.ValidationError: 1 validation error for HuggingFaceHub
+  Value error, Got invalid task None, currently only dict_keys(['translation', 'summarization', 'conversational', 'text-generation', 'text2text-generation']) are supported [type=value_error, input_value={'repo_id': 'google/flan-...nt': None, 'task': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+
+
+During handling of the above exception, another exception occurred:
+
+
+Traceback (most recent call last):
+
+  File "C:\Users\rasha\AI-Assistant\main.py", line 218, in <module>
+    exit_code = main()
+                └ <function main at 0x0000024B57E08900>
+
+  File "C:\Users\rasha\AI-Assistant\main.py", line 173, in main
+    result = run_assistant(
+             └ <function run_assistant at 0x0000024B57DF6FC0>
+
+  File "C:\Users\rasha\AI-Assistant\core\rag_engine.py", line 82, in run_assistant
+    conflicts = detect_conflicts(retrieved_docs, user_query)
+                │                │               └ 'What is machine learning?'
+                │                └ [Document(id='b7d884d4-b255-478c-a228-3a1384fdb7c8', metadata={'source': 'ml_fundamentals.txt', 'chunk_id': 0, 'word_count': ...
+                └ <function detect_conflicts at 0x0000024B57DF7100>
+
+  File "C:\Users\rasha\AI-Assistant\core\reasoning.py", line 116, in detect_conflicts
+    llm_conflicts = _detect_conflicts_with_llm(content_by_source, query)
+                    │                          │                  └ 'What is machine learning?'
+                    │                          └ defaultdict(<class 'list'>, {'ml_fundamentals.txt': ["# Machine Learning Fundamentals\n\n## Introduction\nMachine learning is...
+                    └ <function _detect_conflicts_with_llm at 0x0000024B57DF7380>
+
+  File "C:\Users\rasha\AI-Assistant\core\reasoning.py", line 257, in _detect_conflicts_with_llm
+    llm = get_llm()
+          └ <function get_llm at 0x0000024B57A223E0>
+
+  File "C:\Users\rasha\AI-Assistant\core\llm.py", line 276, in get_llm
+    _enhanced_llm = EnhancedLLM(config_path, cache_manager)
+                    │           │            └ None
+                    │           └ 'config.yaml'
+                    └ <class 'core.llm.EnhancedLLM'>
+
+  File "C:\Users\rasha\AI-Assistant\core\llm.py", line 53, in __init__
+    self.primary_model = self._initialize_model()
+    │                    │    └ <function EnhancedLLM._initialize_model at 0x0000024B57DA6E80>
+    │                    └ <core.llm.EnhancedLLM object at 0x0000024B9BF09940>
+    └ <core.llm.EnhancedLLM object at 0x0000024B9BF09940>
+
+> File "C:\Users\rasha\AI-Assistant\core\llm.py", line 128, in _initialize_model
+    self.logger.log(f"Primary model failed: {e}, trying fallback", level="WARNING", component="llm")
+    │    │      │                            └ KeyError("'repo_id'")
+    │    │      └ <function EnhancedLogger.log at 0x0000024B3FABD080>
+    │    └ <core.logger.EnhancedLogger object at 0x0000024B5803D2B0>
+    └ <core.llm.EnhancedLLM object at 0x0000024B9BF09940>
+
+  File "C:\Users\rasha\AI-Assistant\core\logger.py", line 197, in log
+    component_logger.warning(message, extra=log_extra)
+    │                │       │              └ {'session_id': 'session_1754282609_1252', 'component': 'llm', 'timestamp': '2025-08-03T23:43:37.969514', 'thread_id': 27112}
+    │                │       └ "Primary model failed: 1 validation error for HuggingFaceHub\n  Value error, Got invalid task None, currently only dict_keys(...
+    │                └ <function Logger.warning at 0x0000024B3FA04900>
+    └ <loguru.logger handlers=[(id=1, level=20, sink=<stderr>), (id=2, level=20, sink='outputs/activity.log'), (id=3, level=20, sin...
+
+KeyError: "'repo_id'"
+2025-08-04T00:10:28.019098-0500 | ERROR | core.logger | All models failed: "'repo_id'" | {}
+Traceback (most recent call last):
+
+  File "C:\Users\rasha\AI-Assistant\core\llm.py", line 116, in _initialize_model
+    model = HuggingFaceHub(
+            └ <class 'langchain_community.llms.huggingface_hub.HuggingFaceHub'>
+
+  File "C:\Users\rasha\venv\Lib\site-packages\langchain_core\_api\deprecation.py", line 222, in warn_if_direct_instance
+    return wrapped(self, *args, **kwargs)
+           │       │      │       └ {'repo_id': 'google/flan-t5-base', 'model_kwargs': {'temperature': 0.1, 'max_length': 512, 'do_sample': True}, 'huggingfacehu...
+           │       │      └ ()
+           │       └ HuggingFaceHub()
+           └ <function Serializable.__init__ at 0x0000022049687C40>
+  File "C:\Users\rasha\venv\Lib\site-packages\langchain_core\load\serializable.py", line 130, in __init__
+    super().__init__(*args, **kwargs)
+                      │       └ {'repo_id': 'google/flan-t5-base', 'model_kwargs': {'temperature': 0.1, 'max_length': 512, 'do_sample': True}, 'huggingfacehu...
+                      └ ()
+  File "C:\Users\rasha\venv\Lib\site-packages\pydantic\main.py", line 253, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+                     │    │                      │               │                   └ HuggingFaceHub()
+                     │    │                      │               └ {'repo_id': 'google/flan-t5-base', 'model_kwargs': {'temperature': 0.1, 'max_length': 512, 'do_sample': True}, 'huggingfacehu...
+                     │    │                      └ <method 'validate_python' of 'pydantic_core._pydantic_core.SchemaValidator' objects>
+                     │    └ SchemaValidator(title="HuggingFaceHub", validator=Model(
+                     │          ModelValidator {
+                     │              revalidate: Never,
+                     │              validator: F...
+                     └ HuggingFaceHub()
+
+pydantic_core._pydantic_core.ValidationError: 1 validation error for HuggingFaceHub
+  Value error, Got invalid task None, currently only dict_keys(['translation', 'summarization', 'conversational', 'text-generation', 'text2text-generation']) are supported [type=value_error, input_value={'repo_id': 'google/flan-...nt': None, 'task': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+
+
+During handling of the above exception, another exception occurred:
+
+
+Traceback (most recent call last):
+
+  File "C:\Users\rasha\AI-Assistant\main.py", line 218, in <module>
+    exit_code = main()
+                └ <function main at 0x000002204AF2A0C0>
+
+  File "C:\Users\rasha\AI-Assistant\main.py", line 173, in main
+    result = run_assistant(
+             └ <function run_assistant at 0x000002204AF29440>
+
+  File "C:\Users\rasha\AI-Assistant\core\rag_engine.py", line 91, in run_assistant
+    conflicts = detect_conflicts(retrieved_docs, user_query)
+                │                │               └ 'What is machine learning?'
+                │                └ [Document(id='73ec0714-233c-4a6b-a6b4-b1ce20b9a882', metadata={'source': 'ml_fundamentals.txt', 'chunk_id': 0, 'word_count': ...
+                └ <function detect_conflicts at 0x000002204AF28860>
+
+  File "C:\Users\rasha\AI-Assistant\core\reasoning.py", line 116, in detect_conflicts
+    llm_conflicts = _detect_conflicts_with_llm(content_by_source, query)
+                    │                          │                  └ 'What is machine learning?'
+                    │                          └ defaultdict(<class 'list'>, {'ml_fundamentals.txt': ["# Machine Learning Fundamentals\n\n## Introduction\nMachine learning is...
+                    └ <function _detect_conflicts_with_llm at 0x000002204AF28AE0>
+
+  File "C:\Users\rasha\AI-Assistant\core\reasoning.py", line 257, in _detect_conflicts_with_llm
+    llm = get_llm()
+          └ <function get_llm at 0x000002204AB50E00>
+
+  File "C:\Users\rasha\AI-Assistant\core\llm.py", line 276, in get_llm
+    _enhanced_llm = EnhancedLLM(config_path, cache_manager)
+                    │           │            └ None
+                    │           └ 'config.yaml'
+                    └ <class 'core.llm.EnhancedLLM'>
+
+  File "C:\Users\rasha\AI-Assistant\core\llm.py", line 53, in __init__
+    self.primary_model = self._initialize_model()
+    │                    │    └ <function EnhancedLLM._initialize_model at 0x000002204AECC540>
+    │                    └ <core.llm.EnhancedLLM object at 0x000002209E14C830>
+    └ <core.llm.EnhancedLLM object at 0x000002209E14C830>
+
+> File "C:\Users\rasha\AI-Assistant\core\llm.py", line 128, in _initialize_model
+    self.logger.log(f"Primary model failed: {e}, trying fallback", level="WARNING", component="llm")
+    │    │      │                            └ KeyError("'repo_id'")
+    │    │      └ <function EnhancedLogger.log at 0x0000022032BDCF40>
+    │    └ <core.logger.EnhancedLogger object at 0x000002207BA3CD70>
+    └ <core.llm.EnhancedLLM object at 0x000002209E14C830>
+
+  File "C:\Users\rasha\AI-Assistant\core\logger.py", line 197, in log
+    component_logger.warning(message, extra=log_extra)
+    │                │       │              └ {'session_id': 'session_1754284209_32584', 'component': 'llm', 'timestamp': '2025-08-04T00:10:28.018995', 'thread_id': 28652}
+    │                │       └ "Primary model failed: 1 validation error for HuggingFaceHub\n  Value error, Got invalid task None, currently only dict_keys(...
+    │                └ <function Logger.warning at 0x0000022032B1C7C0>
+    └ <loguru.logger handlers=[(id=1, level=20, sink=<stderr>), (id=2, level=20, sink='outputs/activity.log'), (id=3, level=20, sin...
+
+KeyError: "'repo_id'"
+2025-08-04T00:14:11.806446-0500 | ERROR | core.logger | All models failed: "'repo_id'" | {}
+Traceback (most recent call last):
+
+  File "C:\Users\rasha\AI-Assistant\core\llm.py", line 116, in _initialize_model
+    model = HuggingFaceHub(
+            └ <class 'langchain_community.llms.huggingface_hub.HuggingFaceHub'>
+
+  File "C:\Users\rasha\venv\Lib\site-packages\langchain_core\_api\deprecation.py", line 222, in warn_if_direct_instance
+    return wrapped(self, *args, **kwargs)
+           │       │      │       └ {'repo_id': 'google/flan-t5-base', 'model_kwargs': {'temperature': 0.1, 'max_length': 512, 'do_sample': True}, 'huggingfacehu...
+           │       │      └ ()
+           │       └ HuggingFaceHub()
+           └ <function Serializable.__init__ at 0x00000175FFC83F60>
+  File "C:\Users\rasha\venv\Lib\site-packages\langchain_core\load\serializable.py", line 130, in __init__
+    super().__init__(*args, **kwargs)
+                      │       └ {'repo_id': 'google/flan-t5-base', 'model_kwargs': {'temperature': 0.1, 'max_length': 512, 'do_sample': True}, 'huggingfacehu...
+                      └ ()
+  File "C:\Users\rasha\venv\Lib\site-packages\pydantic\main.py", line 253, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+                     │    │                      │               │                   └ HuggingFaceHub()
+                     │    │                      │               └ {'repo_id': 'google/flan-t5-base', 'model_kwargs': {'temperature': 0.1, 'max_length': 512, 'do_sample': True}, 'huggingfacehu...
+                     │    │                      └ <method 'validate_python' of 'pydantic_core._pydantic_core.SchemaValidator' objects>
+                     │    └ SchemaValidator(title="HuggingFaceHub", validator=Model(
+                     │          ModelValidator {
+                     │              revalidate: Never,
+                     │              validator: F...
+                     └ HuggingFaceHub()
+
+pydantic_core._pydantic_core.ValidationError: 1 validation error for HuggingFaceHub
+  Value error, Did not find huggingfacehub_api_token, please add an environment variable `HUGGINGFACEHUB_API_TOKEN` which contains it, or pass `huggingfacehub_api_token` as a named parameter. [type=value_error, input_value={'repo_id': 'google/flan-...nt': None, 'task': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+
+
+During handling of the above exception, another exception occurred:
+
+
+Traceback (most recent call last):
+
+  File "C:\Users\rasha\AI-Assistant\test\test_components.py", line 298, in <module>
+    main()
+    └ <function main at 0x00000175E2172FC0>
+
+  File "C:\Users\rasha\AI-Assistant\test\test_components.py", line 262, in main
+    result = test()
+             └ <function test_llm_system at 0x00000175895E2340>
+
+  File "C:\Users\rasha\AI-Assistant\test\test_components.py", line 136, in test_llm_system
+    llm = get_llm()
+          └ <function get_llm at 0x000001758921D120>
+
+  File "C:\Users\rasha\AI-Assistant\core\llm.py", line 276, in get_llm
+    _enhanced_llm = EnhancedLLM(config_path, cache_manager)
+                    │           │            └ None
+                    │           └ 'config.yaml'
+                    └ <class 'core.llm.EnhancedLLM'>
+
+  File "C:\Users\rasha\AI-Assistant\core\llm.py", line 53, in __init__
+    self.primary_model = self._initialize_model()
+    │                    │    └ <function EnhancedLLM._initialize_model at 0x0000017589590860>
+    │                    └ <core.llm.EnhancedLLM object at 0x000001761C3401A0>
+    └ <core.llm.EnhancedLLM object at 0x000001761C3401A0>
+
+> File "C:\Users\rasha\AI-Assistant\core\llm.py", line 128, in _initialize_model
+    self.logger.log(f"Primary model failed: {e}, trying fallback", level="WARNING", component="llm")
+    │    │      │                            └ KeyError("'repo_id'")
+    │    │      └ <function EnhancedLogger.log at 0x00000175F11BCFE0>
+    │    └ <core.logger.EnhancedLogger object at 0x00000175E2174830>
+    └ <core.llm.EnhancedLLM object at 0x000001761C3401A0>
+
+  File "C:\Users\rasha\AI-Assistant\core\logger.py", line 197, in log
+    component_logger.warning(message, extra=log_extra)
+    │                │       │              └ {'session_id': 'session_1754284443_4112', 'component': 'llm', 'timestamp': '2025-08-04T00:14:11.806366', 'thread_id': 31208}
+    │                │       └ "Primary model failed: 1 validation error for HuggingFaceHub\n  Value error, Did not find huggingfacehub_api_token, please ad...
+    │                └ <function Logger.warning at 0x00000175F1114860>
+    └ <loguru.logger handlers=[(id=1, level=20, sink=<stderr>), (id=2, level=20, sink='outputs/activity.log'), (id=3, level=20, sin...
+
+KeyError: "'repo_id'"
+2025-08-04T00:28:16.902537-0500 | ERROR | core.logger | All models failed: "'repo_id'" | {}
+Traceback (most recent call last):
+
+  File "C:\Users\rasha\AI-Assistant\core\llm.py", line 116, in _initialize_model
+    model = HuggingFaceHub(
+            └ <class 'langchain_community.llms.huggingface_hub.HuggingFaceHub'>
+
+  File "C:\Users\rasha\AI-Assistant\venv\Lib\site-packages\langchain_core\_api\deprecation.py", line 222, in warn_if_direct_instance
+    return wrapped(self, *args, **kwargs)
+           │       │      │       └ {'repo_id': 'google/flan-t5-base', 'model_kwargs': {'temperature': 0.1, 'max_length': 512, 'do_sample': True}, 'huggingfacehu...
+           │       │      └ ()
+           │       └ HuggingFaceHub()
+           └ <function Serializable.__init__ at 0x000001EBD046F060>
+  File "C:\Users\rasha\AI-Assistant\venv\Lib\site-packages\langchain_core\load\serializable.py", line 130, in __init__
+    super().__init__(*args, **kwargs)
+                      │       └ {'repo_id': 'google/flan-t5-base', 'model_kwargs': {'temperature': 0.1, 'max_length': 512, 'do_sample': True}, 'huggingfacehu...
+                      └ ()
+  File "C:\Users\rasha\AI-Assistant\venv\Lib\site-packages\pydantic\main.py", line 253, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+                     │    │                      │               │                   └ HuggingFaceHub()
+                     │    │                      │               └ {'repo_id': 'google/flan-t5-base', 'model_kwargs': {'temperature': 0.1, 'max_length': 512, 'do_sample': True}, 'huggingfacehu...
+                     │    │                      └ <method 'validate_python' of 'pydantic_core._pydantic_core.SchemaValidator' objects>
+                     │    └ SchemaValidator(title="HuggingFaceHub", validator=Model(
+                     │          ModelValidator {
+                     │              revalidate: Never,
+                     │              validator: F...
+                     └ HuggingFaceHub()
+
+pydantic_core._pydantic_core.ValidationError: 1 validation error for HuggingFaceHub
+  Value error, Did not find huggingfacehub_api_token, please add an environment variable `HUGGINGFACEHUB_API_TOKEN` which contains it, or pass `huggingfacehub_api_token` as a named parameter. [type=value_error, input_value={'repo_id': 'google/flan-...nt': None, 'task': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+
+
+During handling of the above exception, another exception occurred:
+
+
+Traceback (most recent call last):
+
+  File "C:\Users\rasha\AI-Assistant\test\test_components.py", line 298, in <module>
+    main()
+    └ <function main at 0x000001EBFA0ECA40>
+
+  File "C:\Users\rasha\AI-Assistant\test\test_components.py", line 262, in main
+    result = test()
+             └ <function test_llm_system at 0x000001EBD1CC0C20>
+
+  File "C:\Users\rasha\AI-Assistant\test\test_components.py", line 136, in test_llm_system
+    llm = get_llm()
+          └ <function get_llm at 0x000001EBD18D6660>
+
+  File "C:\Users\rasha\AI-Assistant\core\llm.py", line 276, in get_llm
+    _enhanced_llm = EnhancedLLM(config_path, cache_manager)
+                    │           │            └ None
+                    │           └ 'config.yaml'
+                    └ <class 'core.llm.EnhancedLLM'>
+
+  File "C:\Users\rasha\AI-Assistant\core\llm.py", line 53, in __init__
+    self.primary_model = self._initialize_model()
+    │                    │    └ <function EnhancedLLM._initialize_model at 0x000001EBD1C57100>
+    │                    └ <core.llm.EnhancedLLM object at 0x000001EC1BEB92B0>
+    └ <core.llm.EnhancedLLM object at 0x000001EC1BEB92B0>
+
+> File "C:\Users\rasha\AI-Assistant\core\llm.py", line 128, in _initialize_model
+    self.logger.log(f"Primary model failed: {e}, trying fallback", level="WARNING", component="llm")
+    │    │      │                            └ KeyError("'repo_id'")
+    │    │      └ <function EnhancedLogger.log at 0x000001EBB99ED120>
+    │    └ <core.logger.EnhancedLogger object at 0x000001EBD1F3CD70>
+    └ <core.llm.EnhancedLLM object at 0x000001EC1BEB92B0>
+
+  File "C:\Users\rasha\AI-Assistant\core\logger.py", line 197, in log
+    component_logger.warning(message, extra=log_extra)
+    │                │       │              └ {'session_id': 'session_1754285285_19532', 'component': 'llm', 'timestamp': '2025-08-04T00:28:16.902464', 'thread_id': 25704}
+    │                │       └ "Primary model failed: 1 validation error for HuggingFaceHub\n  Value error, Did not find huggingfacehub_api_token, please ad...
+    │                └ <function Logger.warning at 0x000001EBB99689A0>
+    └ <loguru.logger handlers=[(id=1, level=20, sink=<stderr>), (id=2, level=20, sink='outputs/activity.log'), (id=3, level=20, sin...
+
+KeyError: "'repo_id'"
+2025-08-04T00:39:50.439808-0500 | ERROR | core.logger | All models failed: "'repo_id'" | {}
+Traceback (most recent call last):
+
+  File "C:\Users\rasha\AI-Assistant\core\llm.py", line 119, in _initialize_model
+    model = HuggingFaceHub(
+            └ <class 'langchain_community.llms.huggingface_hub.HuggingFaceHub'>
+
+  File "C:\Users\rasha\AI-Assistant\venv\Lib\site-packages\langchain_core\_api\deprecation.py", line 222, in warn_if_direct_instance
+    return wrapped(self, *args, **kwargs)
+           │       │      │       └ {'repo_id': 'google/flan-t5-base', 'model_kwargs': {'temperature': 0.1, 'max_length': 512, 'do_sample': True}, 'huggingfacehu...
+           │       │      └ ()
+           │       └ HuggingFaceHub()
+           └ <function Serializable.__init__ at 0x00000215BF95F060>
+  File "C:\Users\rasha\AI-Assistant\venv\Lib\site-packages\langchain_core\load\serializable.py", line 130, in __init__
+    super().__init__(*args, **kwargs)
+                      │       └ {'repo_id': 'google/flan-t5-base', 'model_kwargs': {'temperature': 0.1, 'max_length': 512, 'do_sample': True}, 'huggingfacehu...
+                      └ ()
+  File "C:\Users\rasha\AI-Assistant\venv\Lib\site-packages\pydantic\main.py", line 253, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+                     │    │                      │               │                   └ HuggingFaceHub()
+                     │    │                      │               └ {'repo_id': 'google/flan-t5-base', 'model_kwargs': {'temperature': 0.1, 'max_length': 512, 'do_sample': True}, 'huggingfacehu...
+                     │    │                      └ <method 'validate_python' of 'pydantic_core._pydantic_core.SchemaValidator' objects>
+                     │    └ SchemaValidator(title="HuggingFaceHub", validator=Model(
+                     │          ModelValidator {
+                     │              revalidate: Never,
+                     │              validator: F...
+                     └ HuggingFaceHub()
+
+pydantic_core._pydantic_core.ValidationError: 1 validation error for HuggingFaceHub
+  Value error, Got invalid task None, currently only dict_keys(['translation', 'summarization', 'conversational', 'text-generation', 'text2text-generation']) are supported [type=value_error, input_value={'repo_id': 'google/flan-...nt': None, 'task': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+
+
+During handling of the above exception, another exception occurred:
+
+
+Traceback (most recent call last):
+
+  File "C:\Users\rasha\AI-Assistant\test\test_components.py", line 298, in <module>
+    main()
+    └ <function main at 0x00000215F9693B00>
+
+  File "C:\Users\rasha\AI-Assistant\test\test_components.py", line 262, in main
+    result = test()
+             └ <function test_llm_system at 0x00000215C11F3CE0>
+
+  File "C:\Users\rasha\AI-Assistant\test\test_components.py", line 136, in test_llm_system
+    llm = get_llm()
+          └ <function get_llm at 0x00000215C1186520>
+
+  File "C:\Users\rasha\AI-Assistant\core\llm.py", line 279, in get_llm
+    _enhanced_llm = EnhancedLLM(config_path, cache_manager)
+                    │           │            └ None
+                    │           └ 'config.yaml'
+                    └ <class 'core.llm.EnhancedLLM'>
+
+  File "C:\Users\rasha\AI-Assistant\core\llm.py", line 56, in __init__
+    self.primary_model = self._initialize_model()
+    │                    │    └ <function EnhancedLLM._initialize_model at 0x00000215C11ADF80>
+    │                    └ <core.llm.EnhancedLLM object at 0x000002161BF157F0>
+    └ <core.llm.EnhancedLLM object at 0x000002161BF157F0>
+
+> File "C:\Users\rasha\AI-Assistant\core\llm.py", line 131, in _initialize_model
+    self.logger.log(f"Primary model failed: {e}, trying fallback", level="WARNING", component="llm")
+    │    │      │                            └ KeyError("'repo_id'")
+    │    │      └ <function EnhancedLogger.log at 0x00000215A8E99120>
+    │    └ <core.logger.EnhancedLogger object at 0x00000215C14092B0>
+    └ <core.llm.EnhancedLLM object at 0x000002161BF157F0>
+
+  File "C:\Users\rasha\AI-Assistant\core\logger.py", line 197, in log
+    component_logger.warning(message, extra=log_extra)
+    │                │       │              └ {'session_id': 'session_1754285981_32636', 'component': 'llm', 'timestamp': '2025-08-04T00:39:50.439710', 'thread_id': 30740}
+    │                │       └ "Primary model failed: 1 validation error for HuggingFaceHub\n  Value error, Got invalid task None, currently only dict_keys(...
+    │                └ <function Logger.warning at 0x00000215A8DE89A0>
+    └ <loguru.logger handlers=[(id=1, level=20, sink=<stderr>), (id=2, level=20, sink='outputs/activity.log'), (id=3, level=20, sin...
+
+KeyError: "'repo_id'"
+2025-08-04T00:50:21.928807-0500 | ERROR | core.logger | All models failed: 1 validation error for HuggingFaceHub
+  Value error, Got invalid task None, currently only dict_keys(['translation', 'summarization', 'conversational', 'text-generation', 'text2text-generation']) are supported [type=value_error, input_value={'repo_id': 'google/flan-...nt': None, 'task': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error | {}
+Traceback (most recent call last):
+
+  File "C:\Users\rasha\AI-Assistant\test\test_components.py", line 298, in <module>
+    main()
+    └ <function main at 0x0000013D75F73B00>
+
+  File "C:\Users\rasha\AI-Assistant\test\test_components.py", line 262, in main
+    result = test()
+             └ <function test_llm_system at 0x0000013D1DB03CE0>
+
+  File "C:\Users\rasha\AI-Assistant\test\test_components.py", line 136, in test_llm_system
+    llm = get_llm()
+          └ <function get_llm at 0x0000013D1DA9A520>
+
+  File "C:\Users\rasha\AI-Assistant\core\llm.py", line 279, in get_llm
+    _enhanced_llm = EnhancedLLM(config_path, cache_manager)
+                    │           │            └ None
+                    │           └ 'config.yaml'
+                    └ <class 'core.llm.EnhancedLLM'>
+
+  File "C:\Users\rasha\AI-Assistant\core\llm.py", line 56, in __init__
+    self.primary_model = self._initialize_model()
+    │                    │    └ <function EnhancedLLM._initialize_model at 0x0000013D1DABDF80>
+    │                    └ <core.llm.EnhancedLLM object at 0x0000013D9D1C57F0>
+    └ <core.llm.EnhancedLLM object at 0x0000013D9D1C57F0>
+
+> File "C:\Users\rasha\AI-Assistant\core\llm.py", line 134, in _initialize_model
+    fallback_model = HuggingFaceHub(
+                     └ <class 'langchain_community.llms.huggingface_hub.HuggingFaceHub'>
+
+  File "C:\Users\rasha\AI-Assistant\venv\Lib\site-packages\langchain_core\_api\deprecation.py", line 222, in warn_if_direct_instance
+    return wrapped(self, *args, **kwargs)
+           │       │      │       └ {'repo_id': 'google/flan-t5-small', 'model_kwargs': {'temperature': 0.1, 'max_length': 256, 'do_sample': False}, 'huggingface...
+           │       │      └ ()
+           │       └ HuggingFaceHub()
+           └ <function Serializable.__init__ at 0x0000013D1C26F060>
+  File "C:\Users\rasha\AI-Assistant\venv\Lib\site-packages\langchain_core\load\serializable.py", line 130, in __init__
+    super().__init__(*args, **kwargs)
+                      │       └ {'repo_id': 'google/flan-t5-small', 'model_kwargs': {'temperature': 0.1, 'max_length': 256, 'do_sample': False}, 'huggingface...
+                      └ ()
+  File "C:\Users\rasha\AI-Assistant\venv\Lib\site-packages\pydantic\main.py", line 253, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+                     │    │                      │               │                   └ HuggingFaceHub()
+                     │    │                      │               └ {'repo_id': 'google/flan-t5-small', 'model_kwargs': {'temperature': 0.1, 'max_length': 256, 'do_sample': False}, 'huggingface...
+                     │    │                      └ <method 'validate_python' of 'pydantic_core._pydantic_core.SchemaValidator' objects>
+                     │    └ SchemaValidator(title="HuggingFaceHub", validator=Model(
+                     │          ModelValidator {
+                     │              revalidate: Never,
+                     │              validator: F...
+                     └ HuggingFaceHub()
+
+pydantic_core._pydantic_core.ValidationError: 1 validation error for HuggingFaceHub
+  Value error, Got invalid task None, currently only dict_keys(['translation', 'summarization', 'conversational', 'text-generation', 'text2text-generation']) are supported [type=value_error, input_value={'repo_id': 'google/flan-...nt': None, 'task': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-08-04T00:53:04.367550-0500 | ERROR | core.logger | All models failed: 1 validation error for HuggingFaceHub
+  Value error, Got invalid task None, currently only dict_keys(['translation', 'summarization', 'conversational', 'text-generation', 'text2text-generation']) are supported [type=value_error, input_value={'repo_id': 'google/flan-...nt': None, 'task': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error | {}
+Traceback (most recent call last):
+
+  File "C:\Users\rasha\AI-Assistant\main.py", line 218, in <module>
+    exit_code = main()
+                └ <function main at 0x000002C29BA779C0>
+
+  File "C:\Users\rasha\AI-Assistant\main.py", line 173, in main
+    result = run_assistant(
+             └ <function run_assistant at 0x000002C29BA76D40>
+
+  File "C:\Users\rasha\AI-Assistant\core\rag_engine.py", line 91, in run_assistant
+    conflicts = detect_conflicts(retrieved_docs, user_query)
+                │                │               └ 'What is machine learning?'
+                │                └ [Document(id='c3d211a0-dc1c-48b6-aa35-8a1b5f285340', metadata={'source': 'ml_fundamentals.txt', 'chunk_id': 0, 'word_count': ...
+                └ <function detect_conflicts at 0x000002C29BA76160>
+
+  File "C:\Users\rasha\AI-Assistant\core\reasoning.py", line 116, in detect_conflicts
+    llm_conflicts = _detect_conflicts_with_llm(content_by_source, query)
+                    │                          │                  └ 'What is machine learning?'
+                    │                          └ defaultdict(<class 'list'>, {'ml_fundamentals.txt': ["# Machine Learning Fundamentals\n\n## Introduction\nMachine learning is...
+                    └ <function _detect_conflicts_with_llm at 0x000002C29BA763E0>
+
+  File "C:\Users\rasha\AI-Assistant\core\reasoning.py", line 257, in _detect_conflicts_with_llm
+    llm = get_llm()
+          └ <function get_llm at 0x000002C29BA160C0>
+
+  File "C:\Users\rasha\AI-Assistant\core\llm.py", line 279, in get_llm
+    _enhanced_llm = EnhancedLLM(config_path, cache_manager)
+                    │           │            └ None
+                    │           └ 'config.yaml'
+                    └ <class 'core.llm.EnhancedLLM'>
+
+  File "C:\Users\rasha\AI-Assistant\core\llm.py", line 56, in __init__
+    self.primary_model = self._initialize_model()
+    │                    │    └ <function EnhancedLLM._initialize_model at 0x000002C29BA31B20>
+    │                    └ <core.llm.EnhancedLLM object at 0x000002C31BC2D940>
+    └ <core.llm.EnhancedLLM object at 0x000002C31BC2D940>
+
+> File "C:\Users\rasha\AI-Assistant\core\llm.py", line 134, in _initialize_model
+    fallback_model = HuggingFaceHub(
+                     └ <class 'langchain_community.llms.huggingface_hub.HuggingFaceHub'>
+
+  File "C:\Users\rasha\AI-Assistant\venv\Lib\site-packages\langchain_core\_api\deprecation.py", line 222, in warn_if_direct_instance
+    return wrapped(self, *args, **kwargs)
+           │       │      │       └ {'repo_id': 'google/flan-t5-small', 'model_kwargs': {'temperature': 0.1, 'max_length': 256, 'do_sample': False}, 'huggingface...
+           │       │      └ ()
+           │       └ HuggingFaceHub()
+           └ <function Serializable.__init__ at 0x000002C29A1E6CA0>
+  File "C:\Users\rasha\AI-Assistant\venv\Lib\site-packages\langchain_core\load\serializable.py", line 130, in __init__
+    super().__init__(*args, **kwargs)
+                      │       └ {'repo_id': 'google/flan-t5-small', 'model_kwargs': {'temperature': 0.1, 'max_length': 256, 'do_sample': False}, 'huggingface...
+                      └ ()
+  File "C:\Users\rasha\AI-Assistant\venv\Lib\site-packages\pydantic\main.py", line 253, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+                     │    │                      │               │                   └ HuggingFaceHub()
+                     │    │                      │               └ {'repo_id': 'google/flan-t5-small', 'model_kwargs': {'temperature': 0.1, 'max_length': 256, 'do_sample': False}, 'huggingface...
+                     │    │                      └ <method 'validate_python' of 'pydantic_core._pydantic_core.SchemaValidator' objects>
+                     │    └ SchemaValidator(title="HuggingFaceHub", validator=Model(
+                     │          ModelValidator {
+                     │              revalidate: Never,
+                     │              validator: F...
+                     └ HuggingFaceHub()
+
+pydantic_core._pydantic_core.ValidationError: 1 validation error for HuggingFaceHub
+  Value error, Got invalid task None, currently only dict_keys(['translation', 'summarization', 'conversational', 'text-generation', 'text2text-generation']) are supported [type=value_error, input_value={'repo_id': 'google/flan-...nt': None, 'task': None}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+2025-08-04T01:03:52.987662-0500 | ERROR | core.logger | LLM failed after 3 retries, returning fallback | {}
+NoneType: None
+2025-08-04T01:11:03.129409-0500 | ERROR | core.logger | LLM failed after 3 retries, returning fallback | {}
+NoneType: None
+2025-08-04T01:21:00.304819-0500 | ERROR | core.logger | All models failed: "'do_sample', 'temperature'" | {}
+Traceback (most recent call last):
+
+  File "C:\Users\rasha\AI-Assistant\core\llm.py", line 119, in _initialize_model
+    model = HuggingFaceEndpoint(
+            └ <class 'langchain_huggingface.llms.huggingface_endpoint.HuggingFaceEndpoint'>
+
+  File "C:\Users\rasha\AI-Assistant\venv\Lib\site-packages\langchain_core\load\serializable.py", line 130, in __init__
+    super().__init__(*args, **kwargs)
+                      │       └ {'repo_id': 'google/flan-t5-base', 'task': 'text2text-generation', 'huggingfacehub_api_token': 'hf_MfrCghjgCUqGdbQQDDFpDOwYMA...
+                      └ ()
+  File "C:\Users\rasha\AI-Assistant\venv\Lib\site-packages\pydantic\main.py", line 253, in __init__
+    validated_self = self.__pydantic_validator__.validate_python(data, self_instance=self)
+                     │    │                      │               │                   └ HuggingFaceEndpoint()
+                     │    │                      │               └ {'repo_id': 'google/flan-t5-base', 'task': 'text2text-generation', 'huggingfacehub_api_token': 'hf_MfrCghjgCUqGdbQQDDFpDOwYMA...
+                     │    │                      └ <method 'validate_python' of 'pydantic_core._pydantic_core.SchemaValidator' objects>
+                     │    └ SchemaValidator(title="HuggingFaceEndpoint", validator=FunctionAfter(
+                     │          FunctionAfterValidator {
+                     │              validator: Model(
+                     │      ...
+                     └ HuggingFaceEndpoint()
+
+pydantic_core._pydantic_core.ValidationError: 1 validation error for HuggingFaceEndpoint
+  Value error, Parameters {'do_sample', 'temperature'} should be specified explicitly. Instead they were passed in as part of `model_kwargs` parameter. [type=value_error, input_value={'repo_id': 'google/flan-...512, 'do_sample': True}}, input_type=dict]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error
+
+
+During handling of the above exception, another exception occurred:
+
+
+Traceback (most recent call last):
+
+  File "C:\Users\rasha\AI-Assistant\main.py", line 218, in <module>
+    exit_code = main()
+                └ <function main at 0x0000020A232F2660>
+
+  File "C:\Users\rasha\AI-Assistant\main.py", line 173, in main
+    result = run_assistant(
+             └ <function run_assistant at 0x0000020A232F19E0>
+
+  File "C:\Users\rasha\AI-Assistant\core\rag_engine.py", line 91, in run_assistant
+    conflicts = detect_conflicts(retrieved_docs, user_query)
+                │                │               └ 'What is machine learning?'
+                │                └ [Document(id='d2430f3e-b863-4246-ba17-b95e1408d069', metadata={'source': 'ml_fundamentals.txt', 'chunk_id': 0, 'word_count': ...
+                └ <function detect_conflicts at 0x0000020A232F0E00>
+
+  File "C:\Users\rasha\AI-Assistant\core\reasoning.py", line 116, in detect_conflicts
+    llm_conflicts = _detect_conflicts_with_llm(content_by_source, query)
+                    │                          │                  └ 'What is machine learning?'
+                    │                          └ defaultdict(<class 'list'>, {'ml_fundamentals.txt': ["# Machine Learning Fundamentals\n\n## Introduction\nMachine learning is...
+                    └ <function _detect_conflicts_with_llm at 0x0000020A232F1080>
+
+  File "C:\Users\rasha\AI-Assistant\core\reasoning.py", line 257, in _detect_conflicts_with_llm
+    llm = get_llm()
+          └ <function get_llm at 0x0000020A22E42480>
+
+  File "C:\Users\rasha\AI-Assistant\core\llm.py", line 277, in get_llm
+    _enhanced_llm = EnhancedLLM(config_path, cache_manager)
+                    │           │            └ None
+                    │           └ 'config.yaml'
+                    └ <class 'core.llm.EnhancedLLM'>
+
+  File "C:\Users\rasha\AI-Assistant\core\llm.py", line 56, in __init__
+    self.primary_model = self._initialize_model()
+    │                    │    └ <function EnhancedLLM._initialize_model at 0x0000020A232B07C0>
+    │                    └ <core.llm.EnhancedLLM object at 0x0000020A9BFD7E00>
+    └ <core.llm.EnhancedLLM object at 0x0000020A9BFD7E00>
+
+> File "C:\Users\rasha\AI-Assistant\core\llm.py", line 132, in _initialize_model
+    self.logger.log(f"Primary model failed: {e}, trying fallback", level="WARNING", component="llm")
+    │    │      │                            └ KeyError("'do_sample', 'temperature'")
+    │    │      └ <function EnhancedLogger.log at 0x0000020A0AEDCFE0>
+    │    └ <core.logger.EnhancedLogger object at 0x0000020A23388EC0>
+    └ <core.llm.EnhancedLLM object at 0x0000020A9BFD7E00>
+
+  File "C:\Users\rasha\AI-Assistant\core\logger.py", line 197, in log
+    component_logger.warning(message, extra=log_extra)
+    │                │       │              └ {'session_id': 'session_1754288451_24352', 'component': 'llm', 'timestamp': '2025-08-04T01:21:00.304714', 'thread_id': 21220}
+    │                │       └ "Primary model failed: 1 validation error for HuggingFaceEndpoint\n  Value error, Parameters {'do_sample', 'temperature'} sho...
+    │                └ <function Logger.warning at 0x0000020A0AE30860>
+    └ <loguru.logger handlers=[(id=1, level=20, sink=<stderr>), (id=2, level=20, sink='outputs/activity.log'), (id=3, level=20, sin...
+
+KeyError: "'do_sample', 'temperature'"
+2025-08-04T01:27:10.791692-0500 | ERROR | core.logger | LLM failed after 3 retries, returning fallback | {}
+NoneType: None
+2025-08-04T01:29:27.709861-0500 | ERROR | core.logger | LLM failed after 3 retries, returning fallback | {}
+NoneType: None
+2025-08-04T01:31:25.271712-0500 | ERROR | core.logger | LLM failed after 3 retries, returning fallback | {}
+NoneType: None
+2025-08-04T01:37:51.927690-0500 | ERROR | core.logger | LLM failed after 3 retries, returning fallback | {}
+NoneType: None
+2025-08-04T01:39:25.161618-0500 | ERROR | core.logger | LLM failed after 3 retries, returning fallback | {}
+NoneType: None
+2025-08-04T01:52:54.190986-0500 | ERROR | core.logger | LLM failed after 3 retries, returning fallback | {}
+NoneType: None
+2025-08-04T02:02:51.918006-0500 | ERROR | core.logger | LLM failed after 3 retries, returning fallback | {}
+NoneType: None
+2025-08-04T02:12:05.305497-0500 | ERROR | core.logger | LLM failed after 3 retries, returning fallback | {}
+NoneType: None
+2025-08-04T02:19:56.355443-0500 | ERROR | core.logger | LLM failed after 3 retries, returning fallback | {}
+NoneType: None
+2025-08-04T02:24:50.150475-0500 | ERROR | core.logger | LLM failed after 3 retries, returning fallback | {}
+NoneType: None
+2025-08-04T02:26:17.543001-0500 | ERROR | core.logger | LLM failed after 3 retries, returning fallback | {}
+NoneType: None
+2025-08-04T02:29:34.346453-0500 | ERROR | core.logger | LLM failed after 3 retries, returning fallback | {}
+NoneType: None
